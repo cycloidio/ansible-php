@@ -1,0 +1,22 @@
+---
+
+- name: Add repository key
+  apt_key: url={{ php_debian_pkg_key }} state=present 
+  when: php_pkg_managed
+  when: php_debian_pkg_managed
+
+- name: Install repository
+  apt_repository: repo='{{ item }}'
+                  state=present
+  when: php_debian_pkg_managed
+  with_items: "{{ php_debian_pkg_name }}"
+
+- name: Update apt cache.
+  apt: update_cache=yes cache_valid_time=86400
+
+- name: Ensure PHP packages are installed.
+  apt:
+    name: "{{ item }}"
+    state: installed
+  with_items: php_packages
+  notify: restart webserver
