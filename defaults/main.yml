@@ -104,7 +104,7 @@ php_source_configure_command: >
 # Average size of a process: ps -ylC php5-fpm --sort:rss (result in KB, value below in MB)
 php_average_process_size: 65
 # We will keep at leat 15% of memory for the system
-php_pm_max_children: "{{ (((ansible_memory_mb['real']['total'] * 15) / 100) // php_average_process_size) | int }}"
+php_pm_max_children: "{{ (ansible_memory_mb['real']['total'] - ((ansible_memory_mb['real']['total'] * 15) / 100) // php_average_process_size) | int }}"
 php_pm_min_spare_servers: 1
 php_pm_max_spare_servers: 3
 # start_servers default value is: min_spare_server + (max_spare_server - min_spare_server)
