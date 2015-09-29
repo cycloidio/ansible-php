@@ -57,6 +57,11 @@
   when: php_opcache_enable
   notify: restart webserver
 
+- name: Delete default pool
+  file: path={{ php_conf_path }}/fpm/pool.d/www.conf state=absent
+  notify:
+   - restart webserver
+
 - name: Copy the POOL configurations
   template: >
     src=pool.conf.j2

@@ -110,5 +110,10 @@ php_fpm_pool_defaults:
   pm.status_path: "/fpm-status"
   ping.path: "/fpm-ping"
 
-
-php_fpm_pools: none
+php_fpm_pools:
+  - name: www-data
+    user: www-data
+    group: www-data
+    listen: /var/run/php5-fpm.sock
+    listen.owner: www-data
+    listen.group: www-data
