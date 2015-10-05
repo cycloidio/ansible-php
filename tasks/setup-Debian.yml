@@ -1,5 +1,4 @@
---
-
+---
 - name: Add repository key
   apt_key: url={{ php_debian_pkg_key }} state=present
   when: php_debian_pkg_managed and php_debian_pkg_key
