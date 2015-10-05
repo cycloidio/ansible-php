@@ -1,14 +1,13 @@
----
+--
 
 - name: Add repository key
-  apt_key: url={{ php_debian_pkg_key }} state=present 
-  when: php_pkg_managed
-  when: php_debian_pkg_managed
+  apt_key: url={{ php_debian_pkg_key }} state=present
+  when: php_debian_pkg_managed and php_debian_pkg_key
 
 - name: Install repository
   apt_repository: repo='{{ item }}'
                   state=present
-  when: php_debian_pkg_managed
+  when: php_debian_pkg_managed and php_debian_pkg_name
   with_items: "{{ php_debian_pkg_name }}"
 
 - name: Update apt cache.

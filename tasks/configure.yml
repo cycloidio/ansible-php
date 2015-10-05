@@ -19,7 +19,16 @@
   when: php_use_managed_ini
   with_items:
     - "php.ini"
-    - "cli/php.ini"
+
+- name: Place PHP CLI configuration file in place.
+  template:
+    src: php.ini.j2
+    dest: "/etc/php5/cli/php.ini"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart webserver
+  when: php_use_managed_ini
 
 - name: Changing php umask
   lineinfile: dest=/etc/init/php5-fpm.conf line="umask 0002"
