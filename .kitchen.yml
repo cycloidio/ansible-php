@@ -1,0 +1,22 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+
+provisioner:
+  hosts: test-kitchen
+  name: ansible_playbook
+  ansible_verbosity: 2
+  ansible_verbose: true
+  require_ansible_omnibus: true
+  #requirements_path: requirements-test.yml
+
+platforms:
+  - name: debian-wheezy
+    driver_config:
+      image: debian:wheezy-backports
+      platform: debian
+      require_chef_omnibus: false
+
+suites:
+  - name: default
