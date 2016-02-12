@@ -2,6 +2,7 @@
 driver:
   name: docker
   use_sudo: false
+  require_chef_omnibus: false # No need of chef
 
 provisioner:
   hosts: test-kitchen
@@ -9,6 +10,7 @@ provisioner:
   ansible_verbosity: 2
   ansible_verbose: true
   require_ansible_omnibus: true
+  require_chef_for_busser: false # No need of chef$
   #requirements_path: requirements-test.yml
 
 platforms:
@@ -16,7 +18,6 @@ platforms:
     driver_config:
       image: debian:wheezy-backports
       platform: debian
-      require_chef_omnibus: false
 
 suites:
   - name: default
