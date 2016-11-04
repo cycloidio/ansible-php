@@ -1,0 +1,13 @@
+# Managed by ansible
+
+{{ php_slowlog_path }} {
+        rotate 12
+        weekly
+        missingok
+        notifempty
+        compress
+        delaycompress
+        postrotate
+                /usr/lib/php5/php5-fpm-reopenlogs
+        endscript
+}

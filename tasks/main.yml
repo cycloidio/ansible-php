@@ -47,3 +47,6 @@
 
 # Configure PHP.
 - include: configure.yml
+
+# Configure Logrotate
+- include: logrotate.yml

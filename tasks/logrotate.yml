@@ -1,0 +1,7 @@
+- name: Configure logrotate for php slowlog
+  template:
+    src: logrotate-slowlog.conf.j2
+    dest: /etc/logrotate.d/php-slowlog.conf
+  tags:
+    - logrotate
+  when: php_slowlog_path is defined and php_slowlog_path
