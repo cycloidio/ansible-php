@@ -119,6 +119,7 @@ php_fpm_pool_defaults:
   pm.status_path: "/fpm-status"
   ping.path: "/fpm-ping"
 
+php_slowlog_path: /var/log/php5-slow.log
 php_fpm_pools:
   - name: www-data
     user: www-data
@@ -126,3 +127,5 @@ php_fpm_pools:
     listen: /var/run/php5-fpm.sock
     listen.owner: www-data
     listen.group: www-data
+    slowlog: "{{ php_slowlog_path }}"
+    request_slowlog_timeout: 5s
