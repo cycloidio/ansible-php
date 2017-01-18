@@ -1,3 +1,12 @@
+- name: Check that fpm_reopenlogs_path exist.
+  stat:
+    path: "{{fpm_reopenlogs_path}}"
+  register: _reopenlog
+
+- fail:
+    msg: "You have defined php_slowlog_path, who require valid path fpm_reopenlogs_path for logrotate"
+  when: not _reopenlog.stat.exists
+
 - name: Configure logrotate for php slowlog
   template:
     src: logrotate-slowlog.conf.j2

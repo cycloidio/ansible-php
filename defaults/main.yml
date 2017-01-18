@@ -119,7 +119,8 @@ php_fpm_pool_defaults:
   pm.status_path: "/fpm-status"
   ping.path: "/fpm-ping"
 
-php_slowlog_path: /var/log/php5-slow.log
+fpm_reopenlogs_path: /usr/lib/php5/php5-fpm-reopenlogs
+php_slowlog_path: /var/log/php-slow.log
 php_fpm_pools:
   - name: www-data
     user: www-data
