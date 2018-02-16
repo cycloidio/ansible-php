@@ -130,3 +130,6 @@ php_fpm_pools:
     listen.group: www-data
     slowlog: "{{ php_slowlog_path }}"
     request_slowlog_timeout: 5s
+
+php_session_save_handler: files
+php_session_save_path: ""
