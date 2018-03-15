@@ -60,6 +60,7 @@ By default, all the extra defaults below are applied through the php.ini include
     php_date_timezone: "America/Chicago"
     php_sendmail_path: "/usr/sbin/sendmail -t -i"
     php_short_open_tag: false
+    php_disable_functions: ""
     php_error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
     php_display_errors: "Off"
     php_display_startup_errors: "On"
