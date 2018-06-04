@@ -2,11 +2,11 @@
 dependencies: []
 
 galaxy_info:
-  author: geerlingguy
-  description: PHP for RedHat/CentOS/Debian/Ubuntu.
-  company: "Midwestern Mac, LLC"
+  author: Cycloid
+  description: PHP for RedHat/CentOS/Debian/Ubuntu (fork of geerlingguy).
+  company: "Cycloid"
   license: "license (BSD, MIT)"
-  min_ansible_version: 1.8
+  min_ansible_version: 2.3
   platforms:
   - name: EL
     versions:
@@ -19,5 +19,5 @@ galaxy_info:
     versions:
     - all
   categories:
-    - development
-    - web
+  - development
+  - web

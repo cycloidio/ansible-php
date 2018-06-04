@@ -15,6 +15,6 @@
 - name: Ensure PHP packages are installed.
   apt:
     name: "{{ item }}"
-    state: installed
+    state: present
   with_items: "{{ php_packages }}"
   notify: restart webserver

@@ -1,0 +1,75 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+  # https://yamllint.readthedocs.io/en/latest/configuration.html#ignoring-paths
+  options:
+    config-data: "{extends: relaxed, rules: {line-length: {max: 200}}}"
+platforms:
+  - name: debian-php7
+    image: debian:stretch
+    privileged: true
+    # Adding some rm of systemctl because ansible try to use it by default in the container.
+    command: sh -c 'rm -f /bin/systemctl /sbin/initctl ; while sleep 3600; do :; done'
+    groups:
+      - tag_project_php
+      - tag_role_php
+      - tag_project_php
+      - tag_cycloid_io_true
+      - tag_env_test
+
+  - name: debian-php5
+    image: debian:jessie
+    privileged: true
+    # Adding some rm of systemctl because ansible try to use it by default in the container.
+    command: sh -c 'rm -f /bin/systemctl /sbin/initctl ; while sleep 3600; do :; done'
+    groups:
+      - tag_project_php
+      - tag_role_php
+      - tag_project_php
+      - tag_cycloid_io_true
+      - tag_env_test
+
+provisioner:
+  name: ansible
+  env:
+    MOLECULE_DEBUG: "true"
+  lint:
+    name: ansible-lint
+    options:
+      x:
+        - ANSIBLE0011
+        - E501
+  inventory:
+    host_vars:
+      debian-php5:
+        php_version_to_install: 5
+        php_debian_pkg_managed: true
+        php_enable_php_fpm: true
+        php_enable_webserver: false
+      debian-php7:
+        php_version_to_install: 7.1
+        php_debian_pkg_managed: true
+        php_enable_php_fpm: true
+        php_debian_pkg_name:
+          - deb https://packages.sury.org/php/ stretch main
+        php_debian_pkg_key: https://packages.sury.org/php/apt.gpg
+        php_enable_webserver: false
+  options:
+    extra-vars:
+      env=test
+      project=php
+
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
+    options:
+      ignore: E501
