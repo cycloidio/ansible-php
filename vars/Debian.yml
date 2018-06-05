@@ -10,7 +10,6 @@ __php_packages:
   - php{{php_version_to_install}}-gd
   - php-pear
 __php_webserver_daemon: "nginx"
-__php_debian_pkg_managed: true
 
 # Vendor-specific configuration paths on Debian/Ubuntu make my brain asplode.
 
