@@ -11,6 +11,18 @@ lint:
   options:
     config-data: "{extends: relaxed, rules: {line-length: {max: 200}}}"
 platforms:
+  - name: ubuntu-php7
+    image: ubuntu:bionic
+    privileged: true
+    # Adding some rm of systemctl because ansible try to use it by default in the container.
+    command: sh -c 'rm -f /bin/systemctl /sbin/initctl ; while sleep 3600; do :; done'
+    groups:
+      - tag_project_php
+      - tag_role_php
+      - tag_project_php
+      - tag_cycloid_io_true
+      - tag_env_test
+
   - name: debian-php7
     image: debian:stretch
     privileged: true
@@ -50,15 +62,16 @@ provisioner:
       debian-php5:
         php_version_to_install: 5
         php_debian_pkg_managed: true
-        php_enable_php_fpm: true
         php_enable_webserver: false
       debian-php7:
         php_version_to_install: 7.1
         php_debian_pkg_managed: true
-        php_enable_php_fpm: true
         php_debian_pkg_name:
           - deb https://packages.sury.org/php/ stretch main
         php_debian_pkg_key: https://packages.sury.org/php/apt.gpg
+        php_enable_webserver: false
+      ubuntu-php7:
+        php_version_to_install: 7.2
         php_enable_webserver: false
   options:
     extra-vars:

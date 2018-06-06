@@ -1,7 +1,6 @@
 ---
 __php_packages:
   - php{{php_version_to_install}}
-  - php{{php_version_to_install}}-mcrypt
   - php{{php_version_to_install}}-cli
   - php{{php_version_to_install}}-common
   - php{{php_version_to_install}}-curl
