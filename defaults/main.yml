@@ -5,8 +5,11 @@ php_enablerepo: ""
 # Set this to false if you're not using PHP with Apache/Nginx/etc.
 php_enable_webserver: true
 
+# Use 7.2, 7.1 if you want to change packages
+php_version_to_install: 5
+
 # Start and enable the PHP fpm service.
-php_enable_php_fpm: false
+php_enable_php_fpm: true
 
 # The executable to run when calling PHP from the command line.
 php_executable: "php"
@@ -39,7 +42,7 @@ php_debian_pkg_name: ""
 # Any and all changes to /etc/php.ini will be your responsibility.
 php_use_managed_ini: true
 
-php_expose_php: "On"
+php_expose_php: "Off"
 php_memory_limit: "256M"
 php_max_execution_time: "60"
 php_max_input_time: "60"
@@ -59,51 +62,6 @@ php_error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
 php_display_errors: "Off"
 php_display_startup_errors: "Off"
 
-# Install PHP from source (instead of using a package manager) with these vars.
-php_install_from_source: false
-php_source_version: "master"
-php_source_clone_dir: "~/php-src"
-php_source_install_path: "/opt/php"
-# For faster compile time: "make --jobs=X" where X is # of cores present.
-php_source_make_command: "make"
-php_source_configure_command: >
-  ./configure
-  --prefix={{ php_source_install_path }}
-  --with-config-file-path={{ php_conf_path }}
-  --enable-mbstring
-  --enable-zip
-  --enable-bcmath
-  --enable-pcntl
-  --enable-ftp
-  --enable-exif
-  --enable-calendar
-  --enable-opcache
-  --enable-pdo
-  --enable-sysvmsg
-  --enable-sysvsem
-  --enable-sysvshm
-  --enable-wddx
-  --with-curl
-  --with-mcrypt
-  --with-iconv
-  --with-gmp
-  --with-pspell
-  --with-gd
-  --with-jpeg-dir=/usr
-  --with-png-dir=/usr
-  --with-zlib-dir=/usr
-  --with-xpm-dir=/usr
-  --with-freetype-dir=/usr
-  --enable-gd-native-ttf
-  --enable-gd-jis-conv
-  --with-openssl
-  --with-pdo-mysql=/usr
-  --with-gettext=/usr
-  --with-zlib=/usr
-  --with-bz2=/usr
-  --with-recode=/usr
-  --with-mysqli=/usr/bin/mysql_config
-
 # Average size of a process: ps -ylC php5-fpm --sort:rss (result in KB, value below in MB)
 php_average_process_size: 65
 # We will keep at leat 15% of memory for the system
@@ -113,6 +71,18 @@ php_pm_max_spare_servers: 3
 # start_servers default value is: min_spare_server + (max_spare_server - min_spare_server)
 php_pm_start_servers: "{{ php_pm_min_spare_servers + (php_pm_max_spare_servers - php_pm_min_spare_servers) }}"
 
+php_slowlog_path: /var/log/php-slow.log
+
+php_fpm_pools:
+  - name: www-data
+    user: www-data
+    group: www-data
+    listen: /var/run/php{{php_version_to_install}}-fpm.sock
+    listen.owner: www-data
+    listen.group: www-data
+    slowlog: "{{ php_slowlog_path }}"
+    request_slowlog_timeout: 5s
+
 php_fpm_pool_defaults:
   pm: dynamic
   pm.max_children: "{{ php_pm_max_children }}"
@@ -121,18 +91,6 @@ php_fpm_pool_defaults:
   pm.max_spare_servers: "{{ php_pm_max_spare_servers }}"
   pm.status_path: "/fpm-status"
   ping.path: "/fpm-ping"
-
-fpm_reopenlogs_path: /usr/lib/php5/php5-fpm-reopenlogs
-php_slowlog_path: /var/log/php-slow.log
-php_fpm_pools:
-  - name: www-data
-    user: www-data
-    group: www-data
-    listen: /var/run/php5-fpm.sock
-    listen.owner: www-data
-    listen.group: www-data
-    slowlog: "{{ php_slowlog_path }}"
-    request_slowlog_timeout: 5s
 
 php_session_save_handler: files
 php_session_save_path: ""
