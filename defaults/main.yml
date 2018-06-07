@@ -95,3 +95,6 @@ php_fpm_pool_defaults:
 php_session_save_handler: files
 php_session_save_path: ""
 php_session_cookie_domain: ""
+
+# This extension is compiled and seems to work only on debian. Ubuntu is failing to compile it
+php_aws_elasticache: false

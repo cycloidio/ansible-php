@@ -79,3 +79,9 @@ def test_packages(host):
         for package in present:
             p = host.package(package)
             assert p.is_installed
+
+
+def test_aws_elasticache(host):
+    if 'php_aws_elasticache' in host.ansible.get_variables():
+        cmd = host.run('php -r "if (!extension_loaded(\'memcached\')) { exit(1); }"')
+        assert cmd.rc == 0

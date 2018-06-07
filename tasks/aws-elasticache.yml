@@ -1,0 +1,121 @@
+---
+- name: Ensure dev packages are installed.
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - zlib1g-dev
+    - pkg-config
+    - libevent-dev
+    - gcc
+    - g++
+    - make
+    - autoconf
+    - libsasl2-dev
+    - git
+
+- name: Install php-igbinary if PHP>5.
+  apt:
+    name: "php-igbinary"
+    state: present
+  when: php_version_to_install != 5
+
+- name: Install php-igbinary if PHP5.
+  apt:
+    name: "php5-igbinary"
+    state: present
+  when: php_version_to_install == 5
+
+- name: Check that /usr/local/src/aws-libmemcached exist
+  stat:
+    path: /usr/local/src/aws-libmemcached
+  register: _aws_libmemcached
+
+- name: Clone the aws-libmemcached repo.
+  git:
+    repo: https://github.com/awslabs/aws-elasticache-cluster-client-libmemcached
+    dest: /usr/local/src/aws-libmemcached
+    version: master
+    accept_hostkey: yes
+    depth: 1
+  when: not _aws_libmemcached.stat.exists
+
+- name: Clone the aws-elasticache repo for php5.
+  git:
+    repo: https://github.com/awslabs/aws-elasticache-cluster-client-memcached-for-php
+    dest: /usr/local/src/aws-elasticache
+    version: master
+    accept_hostkey: yes
+    depth: 1
+  when: php_version_to_install == 5
+
+- name: Clone the aws-elasticache repo for php7.
+  git:
+    repo: https://github.com/awslabs/aws-elasticache-cluster-client-memcached-for-php
+    dest: /usr/local/src/aws-elasticache
+    version: php7
+    accept_hostkey: yes
+    depth: 1
+  when: php_version_to_install != 5
+
+- name: Fix for libmemcached library and autoconf
+  file:
+    path: "{{ item }}"
+    state: touch
+    mode: "u=rwx,g=rx,o=rx"
+  with_items:
+    - /usr/local/src/aws-libmemcached/configure.ac
+    - /usr/local/src/aws-libmemcached/aclocal.m4
+    - /usr/local/src/aws-libmemcached/configure
+    - /usr/local/src/aws-libmemcached/Makefile.am
+    - /usr/local/src/aws-libmemcached/Makefile.in
+  when: not _aws_libmemcached.stat.exists
+
+- name: Run configure script on libmemcached.
+  command: >
+    ./configure --with-libmemcached-dir=/usr/local/ --disable-memcached-sasl
+    chdir=/usr/local/src/aws-libmemcached
+    creates=/usr/local/bin/memstat
+
+- name: Make and install libmemcached.
+  command: >
+    {{ item }}
+    chdir=/usr/local/src/aws-libmemcached
+    creates=/usr/local/bin/memstat
+  with_items:
+    - make
+    - make install
+
+- name: Run phpize.
+  command: >
+    phpize
+    chdir=/usr/local/src/aws-elasticache
+    creates={{ php_extension_conf_paths[0] }}/{{ php_aws_memcached_conf_filename }}
+
+- name: Run configure script for elasticache client.
+  command: >
+    ./configure --with-libmemcached-dir=/usr/local/ --enable-memcached-igbinary
+    chdir=/usr/local/src/aws-elasticache
+    creates={{ php_extension_conf_paths[0] }}/{{ php_aws_memcached_conf_filename }}
+
+- name: Make and install elasticache client.
+  command: >
+    {{ item }}
+    chdir=/usr/local/src/aws-elasticache
+    creates={{ php_extension_conf_paths[0] }}/{{ php_aws_memcached_conf_filename }}
+  with_items:
+    - make
+    - make install
+
+- name: Ensure the aws-memcached.ini is installed in PHP configuration
+  template:
+    src: aws-memcached.ini.j2
+    dest: "{{ item }}/{{ php_aws_memcached_conf_filename }}"
+    owner: root
+    group: root
+    force: yes
+    mode: 0644
+  notify:
+    - restart webserver
+    - restart php-fpm
+  with_items: "{{ php_extension_conf_paths }}"
