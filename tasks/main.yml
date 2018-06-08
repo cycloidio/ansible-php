@@ -61,6 +61,11 @@
 # Configure PHP.
 - include: configure.yml
 
+# Configure AWS Elasticache.
+- include: aws-elasticache.yml
+  when: php_aws_elasticache
+
+
 # Configure Logrotate
 - include: logrotate.yml
   when: php_enable_php_fpm
