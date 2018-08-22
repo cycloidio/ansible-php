@@ -1,12 +1,12 @@
 - name: Setting reopenlogs path
   set_fact:
     fpm_reopenlogs_path: /usr/lib/php5/php5-fpm-reopenlogs
-  when: php_version_to_install == 5
+  when: php_version_to_install == 5 and fpm_reopenlogs_path is not defined
 
 - name: Setting reopenlogs path
   set_fact:
     fpm_reopenlogs_path: /usr/lib/php/php{{php_version_to_install}}-fpm-reopenlogs
-  when: php_version_to_install > 5
+  when: php_version_to_install > 5 and fpm_reopenlogs_path is not defined
 
 - name: Check that fpm_reopenlogs_path exist.
   stat:
