@@ -57,7 +57,7 @@ By default, all the extra defaults below are applied through the php.ini include
     php_realpath_cache_size: "32K"
     php_upload_max_filesize: "64M"
     php_post_max_size: "32M"
-    auto_prepend_file: ""
+    php_auto_prepend_file: ""
     php_date_timezone: "America/Chicago"
     php_sendmail_path: "/usr/sbin/sendmail -t -i"
     php_short_open_tag: false
