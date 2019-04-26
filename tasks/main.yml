@@ -45,10 +45,10 @@
   when: php_extension_conf_paths is not defined
 
 # Setup/install tasks.
-- include: setup-RedHat.yml
+- include_tasks: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
-- include: setup-Debian.yml
+- include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Check the installed version of PHP.
@@ -63,13 +63,13 @@
   when: "php_version.stdout.split('.')[0] == '5' and php_version.stdout.split('.')[1] < '5'"
 
 # Configure PHP.
-- include: configure.yml
+- include_tasks: configure.yml
 
 # Configure AWS Elasticache.
-- include: aws-elasticache.yml
+- include_tasks: aws-elasticache.yml
   when: php_aws_elasticache
 
 
 # Configure Logrotate
-- include: logrotate.yml
+- include_tasks: logrotate.yml
   when: php_enable_php_fpm
