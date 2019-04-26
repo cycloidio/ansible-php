@@ -21,13 +21,17 @@
 # If we are on a debian and php 5
 - name: Setting __php_conf_path (Debian, PHP5)
   set_fact:
-    __php_conf_path: "{{ '/etc/php{{php_version_to_install}}' if php_webserver_daemon and php_webserver_daemon != 'apache2' else '/etc/php{{php_version_to_install}}/apache2' }}"
+    __php_conf_path: >
+      "{{ '/etc/php{{ php_version_to_install }}' if php_webserver_daemon
+      and php_webserver_daemon != 'apache2' else '/etc/php{{ php_version_to_install }}/apache2' }}"
   when: ansible_os_family == 'Debian' and php_version_to_install == 5
 
 # If we are on a debian and php > 5
 - name: Setting __php_conf_path (Debian, PHP>5)
   set_fact:
-    __php_conf_path: "{{ '/etc/php/{{php_version_to_install}}' if php_webserver_daemon and php_webserver_daemon != 'apache2' else '/etc/php{{php_version_to_install}}/apache2' }}"
+    __php_conf_path: >
+      "{{ '/etc/php/{{ php_version_to_install }}' if php_webserver_daemon and
+      php_webserver_daemon != 'apache2' else '/etc/php{{ php_version_to_install }}/apache2' }}"
   when: ansible_os_family == 'Debian' and php_version_to_install != 5
 
 - name: Define php_conf_path.
