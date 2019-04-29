@@ -11,7 +11,7 @@
 - name: Place PHP configuration file in place.
   template:
     src: php.ini.j2
-    dest: "{{ php_conf_path }}/{{ item }}"
+    dest: "{{ php_conf_path }}/{{ item }}"
     owner: root
     group: root
     mode: 0644
@@ -35,7 +35,9 @@
   when: php_use_managed_ini
 
 - name: Changing php umask
-  lineinfile: dest="/etc/init/{{php_fpm_daemon}}.conf" line="umask 0002"
+  lineinfile:
+    path: "/etc/init/{{ php_fpm_daemon }}.conf"
+    line: "umask 0002"
   when: php_enable_php_fpm
 
 - name: Place PHP FPM configuration file in place for php-fpm.
