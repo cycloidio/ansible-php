@@ -6,5 +6,9 @@
   tasks:
     - name: install apt depends
       apt:
-        name: ["net-tools", "lsb-release", "curl", "procps"]
+        name:
+          - net-tools
+          - lsb-release
+          - curl
+          - procps
         state: present

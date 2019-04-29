@@ -1,7 +1,16 @@
 ---
 - name: Ensure dev packages are installed.
   apt:
-    name: ['zlib1g-dev', 'pkg-config', 'libevent-dev', 'gcc', 'g++', 'make', 'autoconf', 'libsasl2-dev', 'git']
+    name:
+      - zlib1g-dev
+      - pkg-config
+      - libevent-dev
+      - gcc
+      - g++
+      - make
+      - autoconf
+      - libsasl2-dev
+      - git
     state: present
 
 - name: Install php-igbinary if PHP>5.
