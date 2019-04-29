@@ -1,7 +1,7 @@
 ---
 - name: Ensure PHP packages are installed.
   yum:
-    name: '{{ php_packages }}'
+    name: "{{ php_packages }}"
     state: present
     enablerepo: "{{ php_enablerepo }}"
   notify: restart webserver
