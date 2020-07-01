@@ -99,3 +99,6 @@ php_session_cookie_domain: ""
 
 # This extension is compiled and seems to work only on debian. Ubuntu is failing to compile it
 php_aws_elasticache: false
+
+# To fix 502 issue when reload, could be defined to "{{ php_max_execution_time }}s"
+fpm_process_control_timeout: ""
