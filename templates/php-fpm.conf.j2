@@ -11,4 +11,3 @@ include={{ php_conf_path }}/fpm/pool.d/*.conf
 
 [global]
 error_log = /var/log/php-fpm.log
-{% if fpm_process_control_timeout != "" %}process_control_timeout = {{ fpm_process_control_timeout }}{% endif %}

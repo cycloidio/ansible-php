@@ -111,6 +111,17 @@
     - restart webserver
     - restart php-fpm
 
+- name: Copy the global POOL configurations
+  template: >
+    src=global_pool.conf.j2
+    dest={{ php_conf_path }}/fpm/pool.d/{{ item['name'] }}.conf
+    backup=yes
+  with_items: "{{ php_fpm_global_pools }}"
+  when: php_fpm_global_pools|lower != 'none' and php_enable_php_fpm
+  notify:
+    - restart webserver
+    - restart php-fpm
+
 - name: Ensure php-fpm is enabled at boot (if configured).
   service:
     name: "{{ php_fpm_daemon }}"

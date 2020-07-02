@@ -1,0 +1,7 @@
+;{{ ansible_managed }}
+
+[{{ item.name }}]
+; Pool custom directives
+{% for directive, value in item.items() if directive != "name" %}
+  {{ directive }} = {{ value }}
+{% endfor %}
