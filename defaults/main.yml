@@ -93,12 +93,16 @@ php_fpm_pool_defaults:
   pm.status_path: "/fpm-status"
   ping.path: "/fpm-ping"
 
+
+# pool used to override phpfpm global config section
+php_fpm_global_pools:
+#  - name: global
+#    process_control_timeout: "30s"
+# To fix 502 issue when reload, could be defined to "{{ php_max_execution_time }}s"
+
 php_session_save_handler: files
 php_session_save_path: ""
 php_session_cookie_domain: ""
 
 # This extension is compiled and seems to work only on debian. Ubuntu is failing to compile it
 php_aws_elasticache: false
-
-# To fix 502 issue when reload, could be defined to "{{ php_max_execution_time }}s"
-fpm_process_control_timeout: ""
