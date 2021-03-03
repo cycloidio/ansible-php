@@ -60,6 +60,7 @@ php_auto_prepend_file: ""
 php_date_timezone: "America/Chicago"
 php_cache_expire: "180"
 php_gc_maxlifetime: "1440"
+php_serialize_precision: "17"
 
 php_sendmail_path: "/usr/sbin/sendmail -t -i"
 php_short_open_tag: false
