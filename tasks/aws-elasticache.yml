@@ -15,7 +15,7 @@
 
 - name: Install php-igbinary if PHP>5.
   apt:
-    name: "php-igbinary"
+    name: "php{{ php_version_to_install }}-igbinary"
     state: present
   when: php_version_to_install != 5
 
