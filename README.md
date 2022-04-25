@@ -44,6 +44,10 @@ You will also need to override the default `php_packages` list and add `php-fpm`
 
 This role does not manage fpm-specific www pool configuration (found in `/etc/php-fpm.d/www.conf` on RedHat/CentOS and `/etc/php5/fpm/pool.d/www.conf` on Debian/Ubuntu), but rather allows you to manage those files on your own. If you change that file, remember to notify the `restart php-fpm` handler so PHP picks up the new settings once in place. Settings like `pm.max_children` and other `pm.*` settings can have a dramatic impact on server performance, and should be tuned specifically for each application and server configuration.
 
+You can also chose to specify if php-fpm service should be `reloaded` or `restarted` using the variable with the corresponding state:
+
+    php_fpm_state: restarted
+
 ### php.ini settings
 
     php_use_managed_ini: true
