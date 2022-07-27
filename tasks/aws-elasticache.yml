@@ -72,7 +72,13 @@
 
 - name: Run configure script on libmemcached.
   command: >
-    ./configure --with-libmemcached-dir=/usr/local/ --disable-memcached-sasl
+    CFLAGS=-Wno-error CPPFLAGS=-Wno-error ./configure --with-libmemcached-dir=/usr/local/ --disable-memcached-sasl
+    chdir=/usr/local/src/aws-libmemcached
+    creates=/usr/local/bin/memstat
+
+- name: Disable Werror flag
+  command: >
+    sed -e s/-Werror//g -i ./Makefile
     chdir=/usr/local/src/aws-libmemcached
     creates=/usr/local/bin/memstat
 
