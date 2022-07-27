@@ -72,7 +72,7 @@
 
 - name: Run configure script on libmemcached.
   command: >
-    CFLAGS=-Wno-error CPPFLAGS=-Wno-error ./configure --with-libmemcached-dir=/usr/local/ --disable-memcached-sasl
+    ./configure --with-libmemcached-dir=/usr/local/ --disable-memcached-sasl
     chdir=/usr/local/src/aws-libmemcached
     creates=/usr/local/bin/memstat
 
