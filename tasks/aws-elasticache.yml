@@ -77,10 +77,9 @@
     creates=/usr/local/bin/memstat
 
 - name: Disable Werror flag
-  command: >
-    sed -e s/-Werror//g -i ./Makefile
-    chdir=/usr/local/src/aws-libmemcached
-    creates=/usr/local/bin/memstat
+  replace:
+    path: "/usr/local/src/aws-libmemcached/Makefile"
+    regexp: "-Werror"
 
 - name: Make and install libmemcached.
   command: >
