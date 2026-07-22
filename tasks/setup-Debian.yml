@@ -12,10 +12,9 @@
   when: php_debian_pkg_managed and php_debian_pkg_name
   with_items: "{{ php_debian_pkg_name }}"
 
-- name: Update apt cache.
-  apt:
-    update_cache: yes
-    cache_valid_time: 86400
+- name: Update apt cache (allow releaseinfo change).
+  command: apt-get update --allow-releaseinfo-change
+  changed_when: false
   ignore_errors: yes
 
 - name: Ensure PHP packages are installed.
