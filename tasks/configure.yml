@@ -82,7 +82,7 @@
     group: root
     force: yes
     mode: 0644
-  when: php_opcache_enable
+  when: php_opcache_enable | bool
   notify:
     - restart webserver
     - restart php-fpm
