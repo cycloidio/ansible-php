@@ -24,4 +24,4 @@
     dest: /etc/logrotate.d/php-slowlog.conf
   tags:
     - logrotate
-  when: php_slowlog_path is defined and php_slowlog_path
+  when: php_slowlog_path is defined and (php_slowlog_path | length > 0)
