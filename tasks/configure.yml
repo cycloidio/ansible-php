@@ -34,12 +34,17 @@
     - restart php-fpm
   when: php_use_managed_ini
 
+- name: Check if upstart fpm config exists (legacy, absent on systemd/Ubuntu 24.04+)
+  stat:
+    path: "/etc/init/{{ php_fpm_daemon }}.conf"
+  register: _php_fpm_upstart_conf
+  when: php_enable_php_fpm
+
 - name: Changing php umask
   lineinfile:
     path: "/etc/init/{{ php_fpm_daemon }}.conf"
     line: "umask 0002"
-  ignore_errors: yes
-  when: php_enable_php_fpm
+  when: php_enable_php_fpm and _php_fpm_upstart_conf.stat is defined and _php_fpm_upstart_conf.stat.exists
 
 - name: Place PHP FPM configuration file in place for php-fpm.
   template:
