@@ -111,7 +111,7 @@
     dest={{ php_conf_path }}/fpm/pool.d/{{ item['name'] }}.conf
     backup=yes
   with_items: "{{ php_fpm_pools }}"
-  when: php_fpm_pools|lower != 'none' and php_enable_php_fpm
+  when: php_enable_php_fpm and (php_fpm_pools | string | lower != 'none')
   notify:
     - restart webserver
     - restart php-fpm
@@ -122,7 +122,7 @@
     dest={{ php_conf_path }}/fpm/pool.d/{{ item['name'] }}.conf
     backup=yes
   with_items: "{{ php_fpm_global_pools }}"
-  when: php_fpm_global_pools|lower != 'none' and php_enable_php_fpm
+  when: php_enable_php_fpm and (php_fpm_global_pools | string | lower != 'none')
   notify:
     - restart webserver
     - restart php-fpm
